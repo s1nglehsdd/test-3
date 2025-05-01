@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Управление товарами</title>
+</head>
+<body>
+<h1>Список товаров</h1>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Название</th>
+        <th>Количество</th>
+        <th>Управление</th> </tr>
+    </thead>
+    <tbody>
+    <tr th:each="product : ${products}">
+        <td th:text="${product.id}"></td>
+        <td th:text="${product.name}"></td>
+        <td th:text="${product.quantity}"></td>
+        <td>
+            <form th:action="@{/admin/products/update-quantity}" method="post">
+                <input type="hidden" name="productId" th:value="${product.id}">
+                <input type="number" name="quantity" th:value="${product.quantity}">
+                <button type="submit">Сохранить</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<br>
+<ul>
+    <li><a th:href="@{/admin}">Панель админа</a></li>
+</ul>
+</body>
+</html>

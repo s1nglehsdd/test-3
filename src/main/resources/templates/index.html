@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Каталог товаров</title>
+</head>
+<body>
+<form th:if="${userId != null}" th:action="@{/logout}" method="post"> <button type="submit">Выйти</button>
+</form>
+<form th:if="${userId == null}" th:action="@{/login}">
+    <button type="submit">Войти</button>
+</form>
+
+<form th:if="${userId != null}" th:action="@{/profile/{userId}(userId=${userId})}">
+    <button type="submit">Профиль</button>
+</form>
+
+
+<div sec:authorize="isAuthenticated()">
+    <div th:if="${balance != null}">
+        <p>Баланс: <span th:text="${#numbers.formatDecimal(balance, 0, 'POINT', 2, 'COMMA')}"></span></p>
+        <p th:if="${param.balanceInjectionId}">
+            <small style="color: orange;">Обратите внимание: баланс может быть результатом SQL-инъекции через параметр balanceInjectionId.</small>
+        </p>
+    </div>
+    <div th:unless="${balance != null}">
+        <p>Не удалось получить баланс.</p>
+        <p th:if="${param.balanceInjectionId}">
+            <small style="color: orange;">При попытке инъекции через параметр balanceInjectionId баланс не был получен.</small>
+        </p>
+    </div>
+    <hr/>
+</div>
+
+<h1>Каталог товаров</h1>
+<div>
+    <ul>
+        <li th:each="product : ${products}">
+            <h2 th:text="${product.name}">Название товара</h2>
+            <p>Цена: <span th:text="${#numbers.formatDecimal(product.price, 0, 'POINT', 2, 'COMMA')}">Цена</span></p>
+
+            <div th:if="${product.quantity > 0}">
+                <p>Количество: <span th:text="${product.quantity}">Количество</span></p>
+            </div>
+            <p th:unless="${product.quantity > 0}" style="color: red;">Нет в наличии</p>
+
+            <a th:href="@{/product/{id}(id=${product.id})}">Подробнее</a>
+        </li>
+    </ul>
+</div>
+</body>
+</html>

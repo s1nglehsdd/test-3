@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Список заказов</title>
+</head>
+<body>
+<h1>Список заказов</h1>
+
+<table style="border-collapse: collapse; width: 100%;">
+    <thead>
+    <tr style="border: 1px solid black;">
+        <th style="border: 1px solid black; padding: 8px;">ID</th>
+        <th style="border: 1px solid black; padding: 8px;">Имя пользователя</th>
+        <th style="border: 1px solid black; padding: 8px;">Имя продукта</th>
+        <th style="border: 1px solid black; padding: 8px;">Статус</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="order : ${orders}" style="border: 1px solid black;">
+        <td style="border: 1px solid black; padding: 8px;" th:text="${order.getId()}"></td>
+        <td style="border: 1px solid black; padding: 8px;" th:text="${order.getUser().getName()}"></td>
+        <td style="border: 1px solid black; padding: 8px;" th:text="${order.getProduct().getName()}"></td>
+        <td style="border: 1px solid black; padding: 8px;">
+            <form th:action="@{/admin/orders/{id}/edit-status(id=${order.getId()})}" method="post">
+                <select name="status">
+                    <option value="Новый" th:selected="${order.getStatus().toString() == 'Новый'}">Новый</option>
+                    <option value="В обработке" th:selected="${order.getStatus().toString() == 'В обработке'}">В обработке</option>
+                    <option value="Выполнен" th:selected="${order.getStatus().toString() == 'Выполнен'}">Выполнен</option>
+                </select>
+                <button type="submit">Обновить</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<div style="margin-top: 20px;">
+    <h2>Статистика</h2>
+    <p><b>Всего заказов:</b> <span th:text="${totalOrders}"></span></p>
+    <p><b>Новых заказов сегодня:</b> <span th:text="${newOrdersToday}"></span></p>
+    <p><b>Выполненных заказов:</b> <span th:text="${completedOrdersCount}"></span> (<span th:text="${completedOrdersPercentage}"></span>%)</p>
+    <p><b>Статус заказов:</b>
+        <span th:each="statusCount, statusCountStat : ${orderStatusCounts}">
+            <span th:text="${statusCount.key}"></span>: <span th:text="${statusCount.value}"></span>
+            <span th:unless="${statusCountStat.last}">, </span>
+        </span>
+    </p>
+
+    <h3>Самые популярные товары:</h3>
+    <ul>
+        <li th:each="productCount : ${popularProducts}">
+            <span th:text="${productCount[0].name}"></span> (Заказано: <span th:text="${productCount[1]}"></span> раз)
+        </li>
+    </ul>
+
+    <h3>Самые активные покупатели:</h3>
+    <ul>
+        <li th:each="customerCount : ${activeCustomers}">
+            <span th:text="${customerCount[0].name}"></span> (Количество заказов: <span th:text="${customerCount[1]}"></span>)
+        </li>
+    </ul>
+</div>
+
+<ul>
+    <li><a th:href="@{/admin}">Панель админа</a></li>
+</ul>
+</body>
+</html>

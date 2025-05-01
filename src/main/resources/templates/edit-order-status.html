@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Изменить статус заказа</title>
+</head>
+<body>
+<h1>Изменить статус заказа</h1>
+<form th:action="@{/admin/orders/{id}/edit-status(id=${order.id})}" method="post">
+    <label for="status">Статус:</label>
+    <select id="status" name="status">
+        <option value="Новый" th:selected="${order.status == 'Новый'}">Новый</option>
+        <option value="В обработке" th:selected="${order.status == 'В обработке'}">В обработке</option>
+        <option value="Выполнен" th:selected="${order.status == 'Выполнен'}">Выполнен</option>
+    </select><br><br>
+    <button type="submit">Сохранить</button>
+</form>
+<ul>
+    <li><a th:href="@{/admin/orders}">список заказов</a></li>
+</ul>
+</body>
+</html>

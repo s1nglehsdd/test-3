@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Панель администратора</title>
+</head>
+<body>
+<h1>Панель администратора</h1>
+<ul>
+    <li><a th:href="@{/admin/users}">Список пользователей</a></li>
+    <li><a th:href="@{/admin/orders}">Список заказов</a></li>
+    <li><a th:href="@{/admin/products}">Список товаров</a></li>
+</ul>
+<form th:action="@{/logout}" method="post">
+    <button type="submit">Выйти</button>
+</form>
+</body>
+</html>

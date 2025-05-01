@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${product.name}">Детали товара</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+        }
+        .comment {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+        }
+        .comment strong {
+            color: #333;
+        }
+         /* Стили для отображения SSRF URL, если он есть */
+        .comment .ssrf-url {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 5px;
+        }
+         /* Стили для изображения в комментарии */
+        .comment .comment-image {
+            max-width: 150px; /* Ограничиваем размер изображения */
+            max-height: 150px;
+            margin-top: 10px;
+            display: block; /* Чтобы изображение было на новой строке */
+        }
+    </style>
+</head>
+<body>
+
+<h1 th:text="${product.name}">Название товара</h1>
+<p th:text="${product.description}">Описание товара</p>
+<p>Цена: <span th:text="${product.price}">Цена</span></p>
+
+<form th:action="@{/order/{productId}(productId=${product.id})}" method="post">
+    <button type="submit">Оформить заказ</button>
+</form>
+<br>
+<a th:href="@{/}">Вернуться в каталог</a>
+
+<hr>
+
+<h3>Оставить отзыв:</h3>
+<form th:action="@{/product/{productId}/comment(productId=${product.id})}" method="post">
+    <div th:if="${authenticatedUsername != null}">
+        <label for="author_input_auth">Ваше имя:</label>
+        <input type="text" id="author_input_auth" name="author" th:value="${authenticatedUsername}" readonly>
+    </div>
+
+    <div th:unless="${authenticatedUsername != null}">
+        <label for="author_input_anon">Ваше имя:</label>
+        <input type="text" id="author_input_anon" name="author" required>
+    </div>
+
+    <br>
+    <div>
+        <label for="comment-text">Расскажите подробнее:</label>
+        <br>
+        <textarea id="comment-text" name="text" rows="4" cols="50" required></textarea>
+    </div>
+    <br>
+    <div>
+        <label for="externalResourceUrl">Добавить фотографию (URL):</label>
+        <input type="text" id="externalResourceUrl" name="externalResourceUrl">
+    </div>
+    <br>
+    <button type="submit">Отправить отзыв</button>
+</form>
+
+<hr>
+
+<h2>Отзывы:</h2>
+
+<div th:if="${comments != null and not comments.empty}">
+    <ul>
+        <li th:each="comment : ${comments}" class="comment">
+            <p><strong>Автор:</strong> <span th:text="${comment.author}">Автор отзыва</span></p>
+            <p th:utext="${comment.text}">Текст отзыва с возможным HTML</p>
+
+            <p th:if="${comment.externalResourceUrl != null and !comment.externalResourceUrl.isEmpty()}" class="ssrf-url">
+                <strong>Фото (URL):</strong> <span th:text="${comment.externalResourceUrl}"></span>
+            </p>
+
+            <p th:if="${comment.externalResourceUrl != null and !comment.externalResourceUrl.isEmpty()}">
+                <img th:src="${comment.externalResourceUrl}"
+                     alt="Внешний ресурс"
+                     class="comment-image"> </p>
+        </li>
+    </ul>
+</div>
+<div th:unless="${comments != null and not comments.empty}">
+    <p>Пока нет отзывов. Оставьте первый!</p>
+</div>
+
+</body>
+</html>

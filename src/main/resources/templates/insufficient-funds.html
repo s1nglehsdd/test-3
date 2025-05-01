@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Недостаточно средств</title>
+</head>
+<body>
+<h1>Недостаточно средств</h1>
+<p>К сожалению, на вашем балансе недостаточно средств для оформления заказа.</p>
+<p>Цена товара: <strong th:text="${productPrice}"></strong></p>
+<p>Ваш текущий баланс: <strong th:text="${currentBalance}"></strong></p>
+<p>Пожалуйста, пополните ваш счёт.</p>
+<a th:href="@{/product/{id}(id=${productId})}">Вернуться к товару</a>
+</body>
+</html>

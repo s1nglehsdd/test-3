@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Личный кабинет</title>
+</head>
+<body>
+<h1>Личный кабинет</h1>
+<p>Email: <span th:text="${user.getEmail()}"></span></p>
+
+<p>
+    Баланс:
+    <span th:if="${user.getRoles() != null && !user.getRoles().isEmpty()}"
+          th:text="${user.getRoles().iterator().next().getBalance()}">
+        </span>
+    <span th:unless="${user.getRoles() != null && !user.getRoles().isEmpty()}">
+            Нет информации о балансе
+        </span>
+</p>
+
+<h2>История заказов</h2>
+<a th:href="@{/profile/{userId}/orders(userId=${user.getId()})}">Посмотреть историю заказов</a>
+
+<form th:action="@{/logout}" method="post">
+    <button type="submit">Выйти</button>
+</form>
+<form th:action="@{/}">
+    <button type="submit"> на главную страницу</button>
+</form>
+</body>
+</html>

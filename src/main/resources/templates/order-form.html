@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Оформление заказа</title>
+</head>
+<body>
+<h1>Оформление заказа</h1>
+<div>
+    <p>Товар: <span th:text="${product.name}">Название товара</span></p>
+    <p>Цена: <span th:text="${product.price}">Цена</span></p>
+</div>
+<form th:action="@{/order/{productId}(productId=${product.id})}" method="post">
+    <input type="hidden" name="productId" th:value="${product.id}">
+    <div>
+        <label for="name">Имя:</label>
+        <input type="text" id="name" name="name" required>
+    </div>
+    <div>
+        <button type="submit">Оформить заказ</button>
+    </div>
+</form>
+<br>
+<a th:href="@{/product/{id}(id=${product.id})}">Вернуться к товару</a>
+
+<div th:if="${insufficientFunds}" id="insufficientFundsModal" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: white; border: 1px solid #ccc; padding: 20px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+    <p>Недостаточно средств для оплаты на сумму <strong th:text="${productPrice}"></strong>.</p>
+    <p>Ваш баланс: <strong th:text="${currentBalance}"></strong>.</p>
+    <p>Пожалуйста, пополните счёт и повторите запрос.</p>
+    <button onclick="document.getElementById('insufficientFundsModal').style.display='none'">OK</button>
+</div>
+
+<script th:inline="javascript">
+    window.onload = function() {
+        var modal = document.getElementById('insufficientFundsModal');
+        if (modal) {
+            modal.style.display = 'block';
+        }
+    };
+</script>
+
+</body>
+</html>

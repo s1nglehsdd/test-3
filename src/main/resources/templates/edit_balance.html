@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Редактировать баланс</title>
+</head>
+<body>
+<h1>Редактировать баланс</h1>
+
+<div th:if="${user.roles == null || user.roles.isEmpty()}">
+    <p style="color: red;">У пользователя нет ролей. Невозможно редактировать баланс.</p>
+</div>
+
+<form th:unless="${user.roles == null || user.roles.isEmpty()}" th:action="@{/admin/users/edit_balance}" th:object="${user}" method="post">
+    <input type="hidden" th:field="*{id}" />
+    <label for="balance">Новый баланс:</label>
+    <input type="number" id="balance" name="balance" th:value="${user.roles.iterator().next().balance}" />
+    <button type="submit">Сохранить</button>
+</form>
+
+<a th:href="@{/admin/users}">Вернуться к списку пользователей</a>
+</body>
+</html>

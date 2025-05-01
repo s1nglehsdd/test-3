@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Заказ успешно оформлен</title>
+</head>
+<body>
+<h1>Спасибо за ваш заказ!</h1>
+
+<p>Ваш заказ успешно оформлен.</p>
+
+<div th:if="${orderNumber}">
+    <p>Номер вашего заказа: <span th:text="${orderNumber}"></span></p>
+</div>
+
+<div>
+    <h2>Информация о заказе:</h2>
+    <p>Товар: <span th:text="${product.name}"></span></p>
+    <p>Цена: <span th:text="${product.price}"></span></p>
+</div>
+
+<a th:href="@{/}">Вернуться на главную страницу</a>
+</body>
+</html>

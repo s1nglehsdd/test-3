@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>История заказов</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+<h1>История заказов</h1>
+<table>
+    <thead>
+    <tr>
+        <th>№ заказа</th>
+        <th>Дата заказа</th>
+        <th>Наименование товара</th>
+        <th>Стоимость</th>
+        <th>Статус заказа</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="order : ${orders}">
+        <td th:text="${order.id}"></td>
+        <td th:text="${#temporals.format(order.orderDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+        <td th:text="${order.product.name}"></td>
+        <td th:text="${order.totalAmount}"></td>
+        <td th:text="${order.status}"></td>
+    </tr>
+    </tbody>
+</table>
+<form th:action="@{/profile/{userId}(userId=${userId})}" >
+    <button type="submit">Профиль</button>
+</form>
+</body>
+</html>
